@@ -1,0 +1,791 @@
+﻿<Window x:Class="HeThongQuanLyVeXeBus.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Quản lý vé xe liên tỉnh" Height="760" Width="1280" MinHeight="650" MinWidth="1050"
+        FontFamily="Segoe UI" FontSize="14" Foreground="#172B3A" Background="#F4F7FA" Language="vi-VN"
+        WindowStartupLocation="CenterScreen" Loaded="Window_Loaded">
+    <Window.Resources>
+        <SolidColorBrush x:Key="Accent" Color="#087F78"/>
+        <SolidColorBrush x:Key="Muted" Color="#64748B"/>
+        <Style TargetType="TextBlock">
+            <Setter Property="Margin" Value="0,3,0,3"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="Foreground" Value="#345064"/>
+        </Style>
+        <Style x:Key="SectionTitle" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="21"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Foreground" Value="#122B3A"/>
+            <Setter Property="Margin" Value="0,0,0,4"/>
+        </Style>
+        <Style x:Key="SectionHint" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="Foreground" Value="{StaticResource Muted}"/>
+            <Setter Property="TextWrapping" Value="Wrap"/>
+            <Setter Property="Margin" Value="0,0,0,18"/>
+        </Style>
+        <Style x:Key="PanelCard" TargetType="Border">
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="BorderBrush" Value="#E4EAF0"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="CornerRadius" Value="14"/>
+        </Style>
+        <Style TargetType="TextBox">
+            <Setter Property="Margin" Value="0,0,0,12"/>
+            <Setter Property="MinHeight" Value="38"/>
+            <Setter Property="Padding" Value="10,5"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="BorderBrush" Value="#CDD8E1"/>
+            <Setter Property="BorderThickness" Value="1"/>
+        </Style>
+        <Style TargetType="ComboBox">
+            <Setter Property="Margin" Value="0,0,0,12"/>
+            <Setter Property="MinHeight" Value="38"/>
+            <Setter Property="Padding" Value="8,4"/>
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="BorderBrush" Value="#CDD8E1"/>
+        </Style>
+        <Style TargetType="DatePicker">
+            <Setter Property="Margin" Value="0,0,0,12"/>
+            <Setter Property="MinHeight" Value="38"/>
+            <Setter Property="BorderBrush" Value="#CDD8E1"/>
+        </Style>
+        <Style TargetType="CheckBox">
+            <Setter Property="Foreground" Value="#33485A"/>
+            <Setter Property="Margin" Value="0,6,0,10"/>
+        </Style>
+        <Style TargetType="Button">
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="Foreground" Value="#244558"/>
+            <Setter Property="BorderBrush" Value="#C9D8E1"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Padding" Value="15,8"/>
+            <Setter Property="Margin" Value="0,6,10,6"/>
+            <Setter Property="MinHeight" Value="38"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#EAF5F3"/>
+                    <Setter Property="BorderBrush" Value="#8BBDB7"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+        <Style x:Key="PrimaryButton" TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
+            <Setter Property="Background" Value="{StaticResource Accent}"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="BorderBrush" Value="{StaticResource Accent}"/>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#066A65"/>
+                    <Setter Property="BorderBrush" Value="#066A65"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+        <Style x:Key="DangerButton" TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
+            <Setter Property="Foreground" Value="#AF353D"/>
+            <Setter Property="BorderBrush" Value="#EFC9CC"/>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#FFF0F0"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+        <Style TargetType="DataGrid">
+            <Setter Property="AutoGenerateColumns" Value="False"/>
+            <Setter Property="IsReadOnly" Value="True"/>
+            <Setter Property="SelectionMode" Value="Single"/>
+            <Setter Property="CanUserAddRows" Value="False"/>
+            <Setter Property="HeadersVisibility" Value="Column"/>
+            <Setter Property="GridLinesVisibility" Value="Horizontal"/>
+            <Setter Property="HorizontalGridLinesBrush" Value="#EDF1F5"/>
+            <Setter Property="RowBackground" Value="White"/>
+            <Setter Property="AlternatingRowBackground" Value="#F8FAFC"/>
+            <Setter Property="BorderBrush" Value="#E4EAF0"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="Margin" Value="0"/>
+            <Setter Property="RowHeight" Value="43"/>
+            <Setter Property="ColumnHeaderHeight" Value="46"/>
+        </Style>
+        <Style TargetType="DataGridColumnHeader">
+            <Setter Property="Background" Value="#EDF3F6"/>
+            <Setter Property="Foreground" Value="#345064"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Padding" Value="10,0"/>
+            <Setter Property="BorderBrush" Value="#E4EAF0"/>
+            <Setter Property="BorderThickness" Value="0,0,1,1"/>
+        </Style>
+        <Style TargetType="DataGridRow">
+            <Setter Property="BorderThickness" Value="0"/>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#E7F5F2"/>
+                </Trigger>
+                <Trigger Property="IsSelected" Value="True">
+                    <Setter Property="Background" Value="#D2EEEA"/>
+                    <Setter Property="Foreground" Value="#123D42"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+        <Style TargetType="DataGridCell">
+            <Setter Property="Padding" Value="10,0"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+        </Style>
+        <Style TargetType="TabItem">
+            <Setter Property="Foreground" Value="#B5CDD4"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Margin" Value="0,0,0,5"/>
+            <Setter Property="MinHeight" Value="46"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="TabItem">
+                        <Border x:Name="NavItem" Background="Transparent" BorderBrush="Transparent"
+                                BorderThickness="1" CornerRadius="9" Padding="11,11" SnapsToDevicePixels="True">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="3"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <Border x:Name="ActiveRail" Width="3" Height="19" CornerRadius="2"
+                                        Background="#83E4D8" Opacity="0" VerticalAlignment="Center"/>
+                                <TextBlock Grid.Column="1" Text="{TemplateBinding Header}"
+                                           Foreground="{TemplateBinding Foreground}"
+                                           FontWeight="{TemplateBinding FontWeight}" FontSize="{TemplateBinding FontSize}"
+                                           Margin="11,0,0,0" TextTrimming="CharacterEllipsis"
+                                           VerticalAlignment="Center"/>
+                            </Grid>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="NavItem" Property="Background" Value="#23475A"/>
+                            </Trigger>
+                            <Trigger Property="IsSelected" Value="True">
+                                <Setter TargetName="NavItem" Property="Background" Value="#1B6868"/>
+                                <Setter TargetName="ActiveRail" Property="Opacity" Value="1"/>
+                                <Setter Property="Foreground" Value="White"/>
+                            </Trigger>
+                            <Trigger Property="IsKeyboardFocused" Value="True">
+                                <Setter TargetName="NavItem" Property="BorderBrush" Value="#83E4D8"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style TargetType="TabControl">
+            <Setter Property="TabStripPlacement" Value="Left"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="TabControl">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="216"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <Border Background="#102C3E" BorderBrush="#315163" BorderThickness="0,0,1,0">
+                                <DockPanel>
+                                    <StackPanel DockPanel.Dock="Top" Margin="16,21,14,17">
+                                        <StackPanel Orientation="Horizontal">
+                                            <Border Width="40" Height="40" CornerRadius="10" Background="#29B5A7"
+                                                    HorizontalAlignment="Left" Margin="0,0,11,0">
+                                                <TextBlock Text="B" FontSize="23" FontWeight="Bold" Foreground="White"
+                                                           HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                            </Border>
+                                            <StackPanel VerticalAlignment="Center">
+                                                <TextBlock Text="BUSLINE" Foreground="White" FontSize="18"
+                                                           FontWeight="Bold" Margin="0"/>
+                                                <TextBlock Text="QUẢN LÝ VÉ LIÊN TỈNH" Foreground="#A5C5D0"
+                                                           FontSize="9" FontWeight="SemiBold" Margin="0"/>
+                                            </StackPanel>
+                                        </StackPanel>
+                                        <Border Height="1" Background="#315163" Margin="1,20,1,15"/>
+                                        <TextBlock Text="ĐIỀU HƯỚNG" Foreground="#93B5C1" FontSize="10"
+                                                   FontWeight="SemiBold" Margin="4,0,0,0"/>
+                                    </StackPanel>
+                                    <Border DockPanel.Dock="Bottom" Margin="16,10,16,20" Padding="12,10"
+                                            Background="#1D4050" CornerRadius="10">
+                                        <StackPanel>
+                                            <StackPanel Orientation="Horizontal">
+                                                <Ellipse Width="7" Height="7" Fill="#69D4C7" Margin="0,0,8,0"/>
+                                                <TextBlock Text="DỮ LIỆU CỤC BỘ" FontSize="10" FontWeight="Bold"
+                                                           Foreground="#69D4C7" Margin="0"/>
+                                            </StackPanel>
+                                            <TextBlock Text="Lưu trên thiết bị này" FontSize="11"
+                                                       Foreground="#C0D5DB" Margin="0,4,0,0"/>
+                                        </StackPanel>
+                                    </Border>
+                                    <TabPanel IsItemsHost="True" Margin="9,0,9,0"/>
+                                </DockPanel>
+                            </Border>
+                            <DockPanel Grid.Column="1" Background="#F4F7FA">
+                                <Border DockPanel.Dock="Top" Background="White" BorderBrush="#E4EAF0"
+                                        BorderThickness="0,0,0,1" Padding="25,17">
+                                    <DockPanel>
+                                        <TextBlock DockPanel.Dock="Right" Text="HỆ THỐNG NỘI BỘ  /  VẬN HÀNH"
+                                                   Foreground="#77909E" FontSize="11" FontWeight="SemiBold"/>
+                                        <StackPanel>
+                                            <TextBlock Text="Điều hành tuyến xe" FontSize="19" FontWeight="SemiBold"
+                                                       Foreground="#122B3A"/>
+                                            <TextBlock Text="Quản lý chuyến đi và hành khách trong một nơi"
+                                                       Foreground="#728694" FontSize="12"/>
+                                        </StackPanel>
+                                    </DockPanel>
+                                </Border>
+                                <Border Padding="24" Background="#F4F7FA">
+                                    <ContentPresenter x:Name="PART_SelectedContentHost" ContentSource="SelectedContent"/>
+                                </Border>
+                            </DockPanel>
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
+    <Grid>
+        <Grid.RowDefinitions><RowDefinition Height="*"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
+        <TabControl x:Name="MainTabs" Grid.Row="0" SelectionChanged="MainTabs_SelectionChanged">
+            <TabItem Header="01   Tổng quan">
+                <ScrollViewer VerticalScrollBarVisibility="Auto">
+                    <StackPanel>
+                        <Border CornerRadius="16" Padding="30,26" Margin="0,0,0,22">
+                            <Border.Background>
+                                <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                                    <GradientStop Color="#114459" Offset="0"/>
+                                    <GradientStop Color="#087F78" Offset="1"/>
+                                </LinearGradientBrush>
+                            </Border.Background>
+                            <Grid>
+                                <StackPanel>
+                                    <TextBlock Text="TRUNG TÂM ĐIỀU HÀNH" Foreground="#A8EEE3" FontSize="11"
+                                               FontWeight="Bold" Margin="0,0,0,9"/>
+                                    <TextBlock Text="Mọi chuyến đi, trong tầm tay." Foreground="White"
+                                               FontSize="27" FontWeight="SemiBold" Margin="0,0,0,5"/>
+                                    <TextBlock Text="Theo dõi vận hành và doanh thu vé trong ngày tại quầy."
+                                               Foreground="#D2ECEC" FontSize="14"/>
+                                </StackPanel>
+                                <Button Content="Làm mới dữ liệu" Click="Refresh_Click" HorizontalAlignment="Right"
+                                        VerticalAlignment="Center" Background="White" Foreground="#075B59" BorderThickness="0"/>
+                            </Grid>
+                        </Border>
+                        <TextBlock Text="Số liệu tổng quan" Style="{StaticResource SectionTitle}"/>
+                        <TextBlock Text="Cập nhật từ dữ liệu vé và lịch chuyến hiện có." Style="{StaticResource SectionHint}"/>
+                        <WrapPanel>
+                            <Border Style="{StaticResource PanelCard}" Width="218" Height="132" Padding="18" Margin="0,0,15,15">
+                                <StackPanel>
+                                    <TextBlock Text="01  /  TUYẾN XE" Foreground="#087F78" FontSize="11" FontWeight="Bold"/>
+                                    <TextBlock x:Name="RouteCount" FontSize="32" FontWeight="Bold" Foreground="#102C3E"/>
+                                    <TextBlock Text="Tuyến đang quản lý" Foreground="{StaticResource Muted}" FontSize="12"/>
+                                </StackPanel>
+                            </Border>
+                            <Border Style="{StaticResource PanelCard}" Width="218" Height="132" Padding="18" Margin="0,0,15,15">
+                                <StackPanel>
+                                    <TextBlock Text="02  /  ĐỘI XE" Foreground="#087F78" FontSize="11" FontWeight="Bold"/>
+                                    <TextBlock x:Name="BusCount" FontSize="32" FontWeight="Bold" Foreground="#102C3E"/>
+                                    <TextBlock Text="Xe đang hoạt động" Foreground="{StaticResource Muted}" FontSize="12"/>
+                                </StackPanel>
+                            </Border>
+                            <Border Style="{StaticResource PanelCard}" Width="218" Height="132" Padding="18" Margin="0,0,15,15">
+                                <StackPanel>
+                                    <TextBlock Text="03  /  LỊCH TRÌNH" Foreground="#087F78" FontSize="11" FontWeight="Bold"/>
+                                    <TextBlock x:Name="TripCount" FontSize="32" FontWeight="Bold" Foreground="#102C3E"/>
+                                    <TextBlock Text="Chuyến sắp chạy" Foreground="{StaticResource Muted}" FontSize="12"/>
+                                </StackPanel>
+                            </Border>
+                            <Border Style="{StaticResource PanelCard}" Width="218" Height="132" Padding="18" Margin="0,0,15,15">
+                                <StackPanel>
+                                    <TextBlock Text="04  /  VÉ HỢP LỆ" Foreground="#087F78" FontSize="11" FontWeight="Bold"/>
+                                    <TextBlock x:Name="TicketCount" FontSize="32" FontWeight="Bold" Foreground="#102C3E"/>
+                                    <TextBlock Text="Đã bán và đã soát" Foreground="{StaticResource Muted}" FontSize="12"/>
+                                </StackPanel>
+                            </Border>
+                        </WrapPanel>
+                        <Border Style="{StaticResource PanelCard}" Padding="24" Margin="0,4,0,0">
+                            <DockPanel>
+                                <Border DockPanel.Dock="Right" Background="#E3F5F0" CornerRadius="18" Padding="14,6"
+                                        VerticalAlignment="Center">
+                                    <TextBlock Text="KHÔNG GỒM VÉ ĐÃ HỦY" Foreground="#087F78" FontSize="11" FontWeight="Bold"/>
+                                </Border>
+                                <StackPanel>
+                                    <TextBlock Text="Doanh thu vé hợp lệ" Foreground="{StaticResource Muted}" FontSize="13"/>
+                                    <TextBlock x:Name="RevenueTotal" FontSize="31" FontWeight="Bold" Foreground="#087F78"/>
+                                </StackPanel>
+                            </DockPanel>
+                        </Border>
+                    </StackPanel>
+                </ScrollViewer>
+            </TabItem>
+            <TabItem Header="02   Tuyến xe">
+                <Grid>
+                    <Grid.ColumnDefinitions><ColumnDefinition Width="365"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
+                    <Border Style="{StaticResource PanelCard}" Margin="0,0,18,0">
+                        <ScrollViewer VerticalScrollBarVisibility="Auto">
+                            <StackPanel Margin="22,20">
+                                <TextBlock Text="Thông tin tuyến xe" Style="{StaticResource SectionTitle}"/>
+                                <TextBlock Text="Tạo tuyến mới hoặc chọn một dòng trong bảng để chỉnh sửa." Style="{StaticResource SectionHint}"/>
+                            <TextBlock Text="Mã tuyến *"/><TextBox x:Name="RouteCodeBox" MaxLength="50"/>
+                            <TextBlock Text="Tên tuyến *"/><TextBox x:Name="RouteNameBox" MaxLength="200"/>
+                            <TextBlock Text="Điểm đi *"/><TextBox x:Name="OriginBox"/>
+                            <TextBlock Text="Điểm đến *"/><TextBox x:Name="DestinationBox"/>
+                            <TextBlock Text="Quãng đường (km) *"/><TextBox x:Name="DistanceBox"/>
+                            <TextBlock Text="Thời gian dự kiến (giờ) *"/><TextBox x:Name="DurationBox"/>
+                            <TextBlock Text="Giá cơ bản (VNĐ) *"/><TextBox x:Name="BasePriceBox"/>
+                            <CheckBox x:Name="RouteActiveBox" Content="Đang hoạt động" IsChecked="True"/>
+                            <WrapPanel><Button Content="Lưu tuyến" Click="AddRoute_Click" Style="{StaticResource PrimaryButton}"/><Button Content="Bỏ chọn" Click="NewRoute_Click"/></WrapPanel>
+                            </StackPanel>
+                        </ScrollViewer>
+                    </Border>
+                    <DataGrid Grid.Column="1" x:Name="RoutesGrid" SelectionChanged="RoutesGrid_SelectionChanged">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Mã" Binding="{Binding RouteCode}" Width="90"/>
+                            <DataGridTextColumn Header="Tên tuyến" Binding="{Binding RouteName}" Width="170"/>
+                            <DataGridTextColumn Header="Điểm đi" Binding="{Binding Origin}" Width="220"/>
+                            <DataGridTextColumn Header="Điểm đến" Binding="{Binding Destination}" Width="220"/>
+                            <DataGridTextColumn Header="Km" Binding="{Binding DistanceKm}" Width="65"/>
+                            <DataGridTextColumn Header="Giờ" Binding="{Binding EstimatedHours}" Width="65"/>
+                            <DataGridTextColumn Header="Giá cơ bản" Binding="{Binding BasePrice, StringFormat={}{0:N0}}" Width="110"/>
+                            <DataGridCheckBoxColumn Header="Hoạt động" Binding="{Binding IsActive}" Width="90"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </Grid>
+            </TabItem>
+            <TabItem Header="03   Đội xe">
+                <Grid>
+                    <Grid.ColumnDefinitions><ColumnDefinition Width="365"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
+                    <Border Style="{StaticResource PanelCard}" Margin="0,0,18,0">
+                        <ScrollViewer VerticalScrollBarVisibility="Auto">
+                            <StackPanel Margin="22,20">
+                                <TextBlock Text="Thông tin xe" Style="{StaticResource SectionTitle}"/>
+                                <TextBlock Text="Theo dõi sức chứa, tiện nghi và trạng thái khai thác." Style="{StaticResource SectionHint}"/>
+                            <TextBlock Text="Biển số *"/><TextBox x:Name="PlateBox" MaxLength="50"/>
+                            <TextBlock Text="Dòng xe *"/><TextBox x:Name="BusModelBox"/>
+                            <TextBlock Text="Loại xe *"/><TextBox x:Name="BusTypeBox" Text="Giường nằm"/>
+                            <TextBlock Text="Số chỗ *"/><TextBox x:Name="CapacityBox" Text="36"/>
+                            <TextBlock Text="Số tầng *"/><ComboBox x:Name="FloorsBox" SelectedIndex="1"><ComboBoxItem Content="1"/><ComboBoxItem Content="2"/></ComboBox>
+                            <CheckBox x:Name="WifiBox" Content="Có Wi-Fi" IsChecked="True" Margin="0,4"/>
+                            <CheckBox x:Name="AirBox" Content="Có điều hòa" IsChecked="True" Margin="0,4"/>
+                            <CheckBox x:Name="BusActiveBox" Content="Đang hoạt động" IsChecked="True" Margin="0,4"/>
+                            <WrapPanel><Button Content="Lưu xe" Click="AddBus_Click" Style="{StaticResource PrimaryButton}"/><Button Content="Bỏ chọn" Click="NewBus_Click"/></WrapPanel>
+                            </StackPanel>
+                        </ScrollViewer>
+                    </Border>
+                    <DataGrid Grid.Column="1" x:Name="BusesGrid" SelectionChanged="BusesGrid_SelectionChanged">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Biển số" Binding="{Binding PlateNumber}" Width="130"/>
+                            <DataGridTextColumn Header="Dòng xe" Binding="{Binding BusModel}" Width="190"/>
+                            <DataGridTextColumn Header="Loại" Binding="{Binding BusTypeName}" Width="180"/>
+                            <DataGridTextColumn Header="Chỗ" Binding="{Binding TotalSeats}" Width="70"/>
+                            <DataGridTextColumn Header="Tầng" Binding="{Binding NumberOfFloors}" Width="70"/>
+                            <DataGridCheckBoxColumn Header="Hoạt động" Binding="{Binding IsActive}" Width="90"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </Grid>
+            </TabItem>
+            <TabItem Header="04   Chuyến xe">
+                <Grid>
+                    <Grid.ColumnDefinitions><ColumnDefinition Width="365"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
+                    <Border Style="{StaticResource PanelCard}" Margin="0,0,18,0">
+                        <ScrollViewer VerticalScrollBarVisibility="Auto">
+                            <StackPanel Margin="22,20">
+                                <TextBlock Text="Lịch chuyến" Style="{StaticResource SectionTitle}"/>
+                                <TextBlock Text="Phân xe, tài xế và theo dõi trạng thái khởi hành." Style="{StaticResource SectionHint}"/>
+                            <TextBlock Text="Tuyến xe *"/><ComboBox x:Name="TripRouteBox" DisplayMemberPath="RouteName" SelectionChanged="TripRoute_Changed"/>
+                            <TextBlock Text="Xe *"/><ComboBox x:Name="TripBusBox"/>
+                            <TextBlock Text="Ngày khởi hành *"/><DatePicker x:Name="DepartureDateBox"/>
+                            <TextBlock Text="Giờ khởi hành (HH:mm) *"/><TextBox x:Name="DepartureTimeBox" Text="08:00"/>
+                            <TextBlock Text="Ngày dự kiến đến *"/><DatePicker x:Name="ArrivalDateBox"/>
+                            <TextBlock Text="Giờ dự kiến đến (HH:mm) *"/><TextBox x:Name="ArrivalTimeBox" Text="15:00"/>
+                            <TextBlock Text="Tài xế *"/><TextBox x:Name="DriverBox"/>
+                            <TextBlock Text="SĐT tài xế *"/><TextBox x:Name="DriverPhoneBox"/>
+                            <TextBlock Text="Giá vé (VNĐ) *"/><TextBox x:Name="TripPriceBox"/>
+                            <WrapPanel><Button Content="Lưu chuyến" Click="AddTrip_Click" Style="{StaticResource PrimaryButton}"/><Button Content="Bỏ chọn" Click="NewTrip_Click"/></WrapPanel>
+                            </StackPanel>
+                        </ScrollViewer>
+                    </Border>
+                    <DockPanel Grid.Column="1">
+                        <WrapPanel DockPanel.Dock="Top" Margin="0,0,0,10">
+                            <TextBlock Text="Lọc ngày đi" Margin="0,8,8,0"/>
+                            <DatePicker x:Name="TripFilterDate" SelectedDateChanged="TripFilter_Changed" Width="150"/>
+                            <Button Content="Bỏ lọc" Click="ClearTripFilter_Click"/>
+                            <TextBlock Text="Trạng thái" Margin="12,8,8,0"/>
+                            <ComboBox x:Name="TripFilterStatus" Width="160" SelectionChanged="TripFilter_Changed" DisplayMemberPath="Label"/>
+                        </WrapPanel>
+                        <WrapPanel DockPanel.Dock="Bottom" Margin="0,12,0,0">
+                            <TextBlock Text="Đổi trạng thái chuyến được chọn:" VerticalAlignment="Center" Margin="0,0,8,0"/>
+                            <ComboBox x:Name="TripStatusBox" Width="170" DisplayMemberPath="Label"/>
+                            <Button Content="Lưu trạng thái" Click="UpdateTripStatus_Click" Style="{StaticResource PrimaryButton}"/>
+                        </WrapPanel>
+                        <DataGrid x:Name="TripsGrid" SelectionChanged="TripsGrid_SelectionChanged">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="Mã chuyến" Binding="{Binding Trip.TripCode}" Width="140"/>
+                                <DataGridTextColumn Header="Tuyến" Binding="{Binding Trip.Route.RouteName}" Width="190"/>
+                                <DataGridTextColumn Header="Xe" Binding="{Binding Trip.Bus.PlateNumber}" Width="125"/>
+                                <DataGridTextColumn Header="Khởi hành" Binding="{Binding Trip.DepartureTime, StringFormat={}{0:dd/MM/yyyy HH:mm}}" Width="155"/>
+                                <DataGridTextColumn Header="Giá" Binding="{Binding Trip.TicketPrice, StringFormat={}{0:N0}}" Width="100"/>
+                                <DataGridTextColumn Header="Trạng thái" Binding="{Binding StatusText}" Width="140"/>
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </DockPanel>
+                </Grid>
+            </TabItem>
+            <TabItem Header="05   Bán vé">
+                <Grid>
+                    <Grid.ColumnDefinitions><ColumnDefinition Width="390"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
+                    <Border Style="{StaticResource PanelCard}" Margin="0,0,18,0">
+                        <ScrollViewer VerticalScrollBarVisibility="Auto">
+                            <StackPanel Margin="22,20">
+                                <TextBlock Text="Xuất vé tại quầy" Style="{StaticResource SectionTitle}"/>
+                                <TextBlock Text="Chọn chuyến rồi ghi nhận thông tin hành khách; không chọn vị trí ghế." Style="{StaticResource SectionHint}"/>
+                            <TextBlock Text="Chuyến xe đang nhận khách *"/><ComboBox x:Name="BookingTripBox" DisplayMemberPath="DisplaySummary" SelectionChanged="BookingTrip_Changed"/>
+                            <TextBlock Text="Số vé đang hiệu lực không được vượt quá sức chứa của xe."
+                                       TextWrapping="Wrap" Foreground="#087F78" Margin="0,0,0,12"/>
+                            <TextBlock Text="Tên khách hàng *"/><TextBox x:Name="CustomerBox"/>
+                            <TextBlock Text="Số điện thoại *"/><TextBox x:Name="CustomerPhoneBox"/>
+                            <TextBlock Text="Email (không bắt buộc)"/><TextBox x:Name="CustomerEmailBox"/>
+                            <TextBlock Text="Điểm đón *"/><TextBox x:Name="PickupBox"/>
+                            <TextBlock Text="Điểm trả *"/><TextBox x:Name="DropoffBox"/>
+                            <TextBlock Text="Phương thức đã nhận tiền *"/>
+                            <ComboBox x:Name="PaymentBox" SelectedIndex="0">
+                                <ComboBoxItem Content="Tiền mặt"/>
+                                <ComboBoxItem Content="Chuyển khoản (đã xác nhận)"/>
+                            </ComboBox>
+                            <Border Background="#EAF6F2" CornerRadius="9" Padding="12" Margin="0,3,0,12">
+                                <TextBlock Text="Chỉ xuất vé sau khi đã nhận tiền hoặc kiểm tra chuyển khoản. Ứng dụng không xử lý thanh toán trực tuyến."
+                                           TextWrapping="Wrap" Foreground="#23615B" FontSize="12"/>
+                            </Border>
+                            <Button Content="Xác nhận đã thu tiền / Bán vé" Click="Book_Click"
+                                    Style="{StaticResource PrimaryButton}" HorizontalAlignment="Left"/>
+                            </StackPanel>
+                        </ScrollViewer>
+                    </Border>
+                    <Border Grid.Column="1" Style="{StaticResource PanelCard}" Padding="28">
+                        <StackPanel HorizontalAlignment="Left">
+                            <TextBlock Text="Xuất vé PDF" Style="{StaticResource SectionTitle}"/>
+                            <TextBlock Text="Lưu vé đã bán thành tài liệu PDF để gửi cho khách hoặc in tại quầy."
+                                       Style="{StaticResource SectionHint}"/>
+                            <TextBlock x:Name="BookingResult" FontSize="16" FontWeight="SemiBold" Foreground="#153E48"
+                                       TextWrapping="Wrap" MaxWidth="520" Margin="0,8,0,22"/>
+                            <Border Background="#F6FAFA" BorderBrush="#E2ECEC" BorderThickness="1"
+                                    CornerRadius="12" Padding="20" HorizontalAlignment="Left" Margin="0,0,0,18">
+                                <StackPanel Width="330">
+                                    <TextBlock Text="VÉ HÀNH KHÁCH  /  PDF" FontSize="12" FontWeight="Bold"
+                                               Foreground="#087F78" Margin="0,0,0,8"/>
+                                    <TextBlock Text="PDF chứa thông tin chuyến, hành khách và mã QR để soát vé."
+                                               TextWrapping="Wrap" Foreground="#345064"/>
+                                </StackPanel>
+                            </Border>
+                            <Button x:Name="ExportPdfButton" Content="Lưu vé thành PDF" Click="ExportPdf_Click"
+                                    Style="{StaticResource PrimaryButton}" HorizontalAlignment="Left" IsEnabled="False"/>
+                            <TextBlock Text="Muốn xuất lại, chọn vé trong màn Vé / soát vé rồi quay lại Bán vé. Vé đã hủy không thể xuất."
+                                       Foreground="{StaticResource Muted}" TextWrapping="Wrap" MaxWidth="470"/>
+                        </StackPanel>
+                    </Border>
+                </Grid>
+            </TabItem>
+            <TabItem Header="06   Vé / soát vé">
+                <DockPanel>
+                    <Border DockPanel.Dock="Top" Style="{StaticResource PanelCard}" Padding="17,14" Margin="0,0,0,14">
+                        <WrapPanel>
+                            <TextBlock Text="TRA CỨU VÉ" FontWeight="Bold" Foreground="#345064" Margin="0,9,16,0"/>
+                            <TextBox x:Name="TicketSearchBox" Width="390" TextChanged="TicketSearch_Changed"
+                                     ToolTip="Nhập mã vé, khách, số điện thoại hoặc mã chuyến"/>
+                            <Button Content="Làm mới" Click="Refresh_Click"/>
+                            <Button Content="Xuất Excel danh sách đang hiển thị" Click="ExportExcel_Click"
+                                    Style="{StaticResource PrimaryButton}"/>
+                        </WrapPanel>
+                    </Border>
+                    <Border DockPanel.Dock="Bottom" Style="{StaticResource PanelCard}" Padding="17,12" Margin="0,14,0,0">
+                        <StackPanel>
+                            <TextBlock x:Name="TicketDetail" TextWrapping="Wrap" Foreground="#345064" Margin="0,0,0,10"/>
+                            <WrapPanel>
+                                <Button Content="Quét QR bằng camera" Click="ScanQr_Click"/>
+                                <Button Content="Soát vé / lên xe" Click="CheckIn_Click" Style="{StaticResource PrimaryButton}"/>
+                                <Button Content="Hủy vé" Click="CancelTicket_Click" Style="{StaticResource DangerButton}"/>
+                                <Button x:Name="MarkRefundedButton" Content="Xác nhận đã hoàn tiền"
+                                        Click="MarkRefunded_Click" IsEnabled="False"/>
+                            </WrapPanel>
+                            <TextBlock Text="Khi hủy vé, chọn đã hoàn hoặc chưa hoàn tiền. Chỉ xác nhận đã hoàn sau khi thực trả tiền cho khách."
+                                       TextWrapping="Wrap" Foreground="{StaticResource Muted}" FontSize="12"/>
+                        </StackPanel>
+                    </Border>
+                    <DataGrid x:Name="TicketsGrid" SelectionChanged="TicketsGrid_SelectionChanged">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Mã vé" Binding="{Binding TicketCode}" Width="145"/>
+                            <DataGridTextColumn Header="Chuyến" Binding="{Binding Trip.TripCode}" Width="145"/>
+                            <DataGridTextColumn Header="Khách" Binding="{Binding CustomerName}" Width="210"/>
+                            <DataGridTextColumn Header="SĐT" Binding="{Binding CustomerPhone}" Width="120"/>
+                            <DataGridTextColumn Header="Giá" Binding="{Binding Price, StringFormat={}{0:N0}}" Width="100"/>
+                            <DataGridTextColumn Header="Trạng thái / hoàn tiền" Binding="{Binding StatusText}" Width="230"/>
+                            <DataGridTextColumn Header="Ngày hoàn tiền" Binding="{Binding RefundedAt, StringFormat={}{0:dd/MM/yyyy HH:mm}}" Width="160"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </DockPanel>
+            </TabItem>
+            <TabItem Header="07   Doanh thu">
+                <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+                    <StackPanel>
+                        <TextBlock Text="Báo cáo doanh thu vé" Style="{StaticResource SectionTitle}"/>
+                        <TextBlock Text="Theo ngày bán vé, dựa trên dữ liệu hiện có. Không phải sao kê ngân hàng hay đối soát dòng tiền."
+                                   Style="{StaticResource SectionHint}"/>
+
+                        <Border Style="{StaticResource PanelCard}" Padding="18,14" Margin="0,0,0,14">
+                            <StackPanel>
+                                <TextBlock Text="PHẠM VI BÁO CÁO" FontWeight="Bold" FontSize="11"
+                                           Foreground="{StaticResource Accent}" Margin="0,0,0,8"/>
+                                <WrapPanel>
+                                    <StackPanel Margin="0,0,14,0">
+                                        <TextBlock Text="Từ ngày bán" FontSize="12" Foreground="{StaticResource Muted}"/>
+                                        <DatePicker x:Name="ReportFromDate" Width="150"/>
+                                    </StackPanel>
+                                    <StackPanel Margin="0,0,14,0">
+                                        <TextBlock Text="Đến ngày bán" FontSize="12" Foreground="{StaticResource Muted}"/>
+                                        <DatePicker x:Name="ReportToDate" Width="150"/>
+                                    </StackPanel>
+                                    <StackPanel Margin="0,0,14,0">
+                                        <TextBlock Text="Tuyến xe" FontSize="12" Foreground="{StaticResource Muted}"/>
+                                        <ComboBox x:Name="ReportRouteBox" DisplayMemberPath="Label" Width="205"/>
+                                    </StackPanel>
+                                    <Button Content="Xem báo cáo" Click="ReportApply_Click" Style="{StaticResource PrimaryButton}"
+                                            VerticalAlignment="Bottom" Margin="0,0,8,12"/>
+                                    <Button Content="Xuất Excel doanh thu" Click="ReportExportExcel_Click"
+                                            VerticalAlignment="Bottom" Margin="0,0,8,12"/>
+                                    <Button Content="Đặt lại" Click="ReportReset_Click" VerticalAlignment="Bottom"
+                                            Margin="0,0,0,12"/>
+                                </WrapPanel>
+                                <TextBlock x:Name="ReportPeriodText" Foreground="{StaticResource Muted}"
+                                           FontSize="12" TextWrapping="Wrap"/>
+                            </StackPanel>
+                        </Border>
+
+                        <TextBlock Text="Tổng hợp kỳ báo cáo" Style="{StaticResource SectionTitle}"/>
+                        <TextBlock Text="Doanh thu chỉ gồm vé đang hiệu lực (đã bán hoặc đã soát); vé đã hủy không tính vào doanh thu."
+                                   Style="{StaticResource SectionHint}" Margin="0,0,0,9"/>
+                        <WrapPanel Margin="0,0,0,5">
+                            <Border Style="{StaticResource PanelCard}" Width="180" Height="108" Padding="14" Margin="0,0,10,10"
+                                    Background="#E7F5F2" BorderBrush="#B9E4DA">
+                                <StackPanel>
+                                    <TextBlock Text="DOANH THU VÉ (₫)" Foreground="#087F78" FontSize="11" FontWeight="Bold"/>
+                                    <TextBlock x:Name="ReportRevenueValue" Text="0" FontSize="25" FontWeight="Bold"
+                                               Foreground="#075E59" TextTrimming="CharacterEllipsis"
+                                               ToolTip="{Binding Text, RelativeSource={RelativeSource Self}}"/>
+                                    <TextBlock Text="Vé chưa hủy" Foreground="{StaticResource Muted}" FontSize="12"/>
+                                </StackPanel>
+                            </Border>
+                            <Border Style="{StaticResource PanelCard}" Width="180" Height="108" Padding="14" Margin="0,0,10,10">
+                                <StackPanel>
+                                    <TextBlock Text="VÉ HIỆU LỰC" Foreground="#087F78" FontSize="11" FontWeight="Bold"/>
+                                    <TextBlock x:Name="ReportActiveValue" Text="0" FontSize="25" FontWeight="Bold" Foreground="#102C3E"/>
+                                    <TextBlock Text="Đã bán + đã soát" Foreground="{StaticResource Muted}" FontSize="12"/>
+                                </StackPanel>
+                            </Border>
+                            <Border Style="{StaticResource PanelCard}" Width="180" Height="108" Padding="14" Margin="0,0,10,10">
+                                <StackPanel>
+                                    <TextBlock Text="ĐÃ SOÁT VÉ" Foreground="#087F78" FontSize="11" FontWeight="Bold"/>
+                                    <TextBlock x:Name="ReportCheckedInValue" Text="0" FontSize="25" FontWeight="Bold" Foreground="#102C3E"/>
+                                    <TextBlock Text="Trong vé hiệu lực" Foreground="{StaticResource Muted}" FontSize="12"/>
+                                </StackPanel>
+                            </Border>
+                            <Border Style="{StaticResource PanelCard}" Width="180" Height="108" Padding="14" Margin="0,0,10,10">
+                                <StackPanel>
+                                    <TextBlock Text="TỔNG VÉ ĐÃ BÁN" Foreground="#087F78" FontSize="11" FontWeight="Bold"/>
+                                    <TextBlock x:Name="ReportTicketCountValue" Text="0" FontSize="25" FontWeight="Bold" Foreground="#102C3E"/>
+                                    <TextBlock Text="Kể cả vé đã hủy" Foreground="{StaticResource Muted}" FontSize="12"/>
+                                </StackPanel>
+                            </Border>
+                            <Border Style="{StaticResource PanelCard}" Width="180" Height="108" Padding="14" Margin="0,0,10,10">
+                                <StackPanel>
+                                    <TextBlock Text="VÉ ĐÃ HỦY" Foreground="#AF5555" FontSize="11" FontWeight="Bold"/>
+                                    <TextBlock x:Name="ReportCancelledValue" Text="0" FontSize="25" FontWeight="Bold" Foreground="#102C3E"/>
+                                    <TextBlock Text="Không ghi nhận doanh thu" Foreground="{StaticResource Muted}" FontSize="11"/>
+                                </StackPanel>
+                            </Border>
+                            <Border Style="{StaticResource PanelCard}" Width="180" Height="108" Padding="14" Margin="0,0,10,10">
+                                <StackPanel>
+                                    <TextBlock Text="GIÁ TRỊ VÉ HỦY (₫)" Foreground="#AF5555" FontSize="11" FontWeight="Bold"/>
+                                    <TextBlock x:Name="ReportCancelledAmountValue" Text="0" FontSize="23" FontWeight="Bold"
+                                               Foreground="#102C3E" TextTrimming="CharacterEllipsis"
+                                               ToolTip="{Binding Text, RelativeSource={RelativeSource Self}}"/>
+                                    <TextBlock Text="Tổng giá vé đã hủy" Foreground="{StaticResource Muted}" FontSize="12"/>
+                                </StackPanel>
+                            </Border>
+                            <Border Style="{StaticResource PanelCard}" Width="180" Height="108" Padding="14" Margin="0,0,10,10">
+                                <StackPanel>
+                                    <TextBlock Text="ĐÃ ĐÁNH DẤU HOÀN" Foreground="#087F78" FontSize="11" FontWeight="Bold"/>
+                                    <TextBlock x:Name="ReportRefundedValue" Text="0" FontSize="25" FontWeight="Bold" Foreground="#102C3E"/>
+                                    <TextBlock Text="Số vé hủy" Foreground="{StaticResource Muted}" FontSize="12"/>
+                                </StackPanel>
+                            </Border>
+                            <Border Style="{StaticResource PanelCard}" Width="180" Height="108" Padding="14" Margin="0,0,10,10">
+                                <StackPanel>
+                                    <TextBlock Text="CHỜ ĐÁNH DẤU HOÀN" Foreground="#AF5555" FontSize="11" FontWeight="Bold"/>
+                                    <TextBlock x:Name="ReportPendingRefundValue" Text="0" FontSize="25" FontWeight="Bold" Foreground="#102C3E"/>
+                                    <TextBlock Text="Số vé hủy" Foreground="{StaticResource Muted}" FontSize="12"/>
+                                </StackPanel>
+                            </Border>
+                            <Border Style="{StaticResource PanelCard}" Width="180" Height="108" Padding="14" Margin="0,0,10,10">
+                                <StackPanel>
+                                    <TextBlock Text="ĐÃ ĐÁNH DẤU HOÀN (₫)" Foreground="#087F78" FontSize="10" FontWeight="Bold"/>
+                                    <TextBlock x:Name="ReportRefundedAmountValue" Text="0" FontSize="23" FontWeight="Bold"
+                                               Foreground="#102C3E" TextTrimming="CharacterEllipsis"
+                                               ToolTip="{Binding Text, RelativeSource={RelativeSource Self}}"/>
+                                    <TextBlock Text="Giá trị vé hủy" Foreground="{StaticResource Muted}" FontSize="12"/>
+                                </StackPanel>
+                            </Border>
+                            <Border Style="{StaticResource PanelCard}" Width="180" Height="108" Padding="14" Margin="0,0,10,10">
+                                <StackPanel>
+                                    <TextBlock Text="CHỜ ĐÁNH DẤU HOÀN (₫)" Foreground="#AF5555" FontSize="10" FontWeight="Bold"/>
+                                    <TextBlock x:Name="ReportPendingRefundAmountValue" Text="0" FontSize="23" FontWeight="Bold"
+                                               Foreground="#102C3E" TextTrimming="CharacterEllipsis"
+                                               ToolTip="{Binding Text, RelativeSource={RelativeSource Self}}"/>
+                                    <TextBlock Text="Giá trị vé hủy" Foreground="{StaticResource Muted}" FontSize="12"/>
+                                </StackPanel>
+                            </Border>
+                        </WrapPanel>
+                        <TextBlock Text="Trạng thái hoàn tiền là ghi nhận thủ công tại quầy; giá trị vé hủy không phải số tiền đã chuyển trả qua ngân hàng."
+                                   Foreground="{StaticResource Muted}" FontSize="12" TextWrapping="Wrap" Margin="0,0,0,19"/>
+
+                        <Border Style="{StaticResource PanelCard}" Padding="20,18" Margin="0,0,0,14">
+                            <StackPanel>
+                                <TextBlock Text="Xu hướng doanh thu" Style="{StaticResource SectionTitle}"/>
+                                <TextBlock Text="Doanh thu vé chưa hủy theo thời điểm bán; nhóm theo ngày, tuần hoặc tháng tùy độ dài kỳ báo cáo. Kéo ngang để xem hết."
+                                           Style="{StaticResource SectionHint}" Margin="0,0,0,12"/>
+                                <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled">
+                                    <ItemsControl x:Name="ReportTrendChart">
+                                        <ItemsControl.ItemsPanel>
+                                            <ItemsPanelTemplate><StackPanel Orientation="Horizontal"/></ItemsPanelTemplate>
+                                        </ItemsControl.ItemsPanel>
+                                        <ItemsControl.ItemTemplate>
+                                            <DataTemplate>
+                                                <StackPanel Width="74" Margin="0,0,6,0" ToolTip="{Binding TooltipText}">
+                                                    <TextBlock Text="{Binding AmountText}" HorizontalAlignment="Center"
+                                                               Foreground="#345064" FontSize="10" TextTrimming="CharacterEllipsis"
+                                                               Width="72" TextAlignment="Center"/>
+                                                    <Grid Height="128">
+                                                        <Border Width="37" Height="{Binding BarHeight}" Background="#18A598"
+                                                                CornerRadius="5,5,0,0" VerticalAlignment="Bottom"
+                                                                HorizontalAlignment="Center"/>
+                                                    </Grid>
+                                                    <TextBlock Text="{Binding Label}" HorizontalAlignment="Center"
+                                                               Foreground="{StaticResource Muted}" FontSize="11"
+                                                               TextTrimming="CharacterEllipsis" Width="72" TextAlignment="Center"/>
+                                                </StackPanel>
+                                            </DataTemplate>
+                                        </ItemsControl.ItemTemplate>
+                                    </ItemsControl>
+                                </ScrollViewer>
+                                <TextBlock x:Name="ReportTrendEmpty" Text="Không có vé được bán trong kỳ đã chọn."
+                                           Visibility="Collapsed" Foreground="{StaticResource Muted}" Margin="0,12,0,0"/>
+                            </StackPanel>
+                        </Border>
+
+                        <Border Style="{StaticResource PanelCard}" Padding="20,18" Margin="0,0,0,14">
+                            <StackPanel>
+                                <TextBlock Text="Doanh thu theo tuyến" Style="{StaticResource SectionTitle}"/>
+                                <TextBlock Text="Chỉ tính giá trị vé chưa hủy; rê chuột lên từng dòng để xem thêm chi tiết."
+                                           Style="{StaticResource SectionHint}" Margin="0,0,0,9"/>
+                                <ItemsControl x:Name="ReportRouteChart">
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate>
+                                            <Grid Margin="0,3,0,9" ToolTip="{Binding TooltipText}">
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="190"/>
+                                                    <ColumnDefinition Width="*"/>
+                                                    <ColumnDefinition Width="130"/>
+                                                </Grid.ColumnDefinitions>
+                                                <TextBlock Text="{Binding Label}" TextTrimming="CharacterEllipsis"
+                                                           FontSize="12" Foreground="#345064" Margin="0,0,12,0"/>
+                                                <Border Grid.Column="1" Background="#F0F4F6" Height="15" CornerRadius="4">
+                                                    <Border Width="{Binding BarWidth}" Background="#18A598" CornerRadius="4"
+                                                            HorizontalAlignment="Left"/>
+                                                </Border>
+                                                <TextBlock Grid.Column="2" Text="{Binding AmountText}" HorizontalAlignment="Right"
+                                                           FontWeight="SemiBold" Foreground="#075E59" FontSize="12"
+                                                           Margin="10,0,0,0" TextTrimming="CharacterEllipsis"/>
+                                            </Grid>
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
+                                <TextBlock x:Name="ReportRouteEmpty" Text="Không có doanh thu theo tuyến trong kỳ đã chọn."
+                                           Visibility="Collapsed" Foreground="{StaticResource Muted}" Margin="0,9,0,0"/>
+                            </StackPanel>
+                        </Border>
+                        <Border Style="{StaticResource PanelCard}" Padding="20,18" Margin="0,0,0,20">
+                            <StackPanel>
+                                <TextBlock Text="Theo phương thức ghi nhận thanh toán" Style="{StaticResource SectionTitle}"/>
+                                <TextBlock Text="Phân loại từ thông tin vé; không xác nhận giao dịch ngân hàng."
+                                           Style="{StaticResource SectionHint}" Margin="0,0,0,9"/>
+                                <ItemsControl x:Name="ReportPaymentChart">
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate>
+                                            <Grid Margin="0,3,0,9" ToolTip="{Binding TooltipText}">
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="190"/>
+                                                    <ColumnDefinition Width="*"/>
+                                                    <ColumnDefinition Width="130"/>
+                                                </Grid.ColumnDefinitions>
+                                                <TextBlock Text="{Binding Label}" TextTrimming="CharacterEllipsis"
+                                                           FontSize="12" Foreground="#345064" Margin="0,0,12,0"/>
+                                                <Border Grid.Column="1" Background="#F0F4F6" Height="15" CornerRadius="4">
+                                                    <Border Width="{Binding BarWidth}" Background="#4599AF" CornerRadius="4"
+                                                            HorizontalAlignment="Left"/>
+                                                </Border>
+                                                <TextBlock Grid.Column="2" Text="{Binding AmountText}" HorizontalAlignment="Right"
+                                                           FontWeight="SemiBold" Foreground="#245A73" FontSize="12"
+                                                           Margin="10,0,0,0" TextTrimming="CharacterEllipsis"/>
+                                            </Grid>
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
+                                <TextBlock x:Name="ReportPaymentEmpty" Text="Không có phương thức thanh toán cho vé hợp lệ trong kỳ đã chọn."
+                                           Visibility="Collapsed" Foreground="{StaticResource Muted}" Margin="0,9,0,0"/>
+                            </StackPanel>
+                        </Border>
+
+                        <TextBlock Text="Chi tiết theo chuyến" Style="{StaticResource SectionTitle}"/>
+                        <TextBlock Text="Các chuyến có vé được bán trong kỳ; ngày khởi hành có thể nằm ngoài kỳ báo cáo."
+                                   Style="{StaticResource SectionHint}" Margin="0,0,0,9"/>
+                        <DataGrid x:Name="ReportTripsGrid" Height="260" Margin="0,0,0,20"
+                                  HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="Mã chuyến" Binding="{Binding TripCode}" Width="130"/>
+                                <DataGridTextColumn Header="Tuyến" Binding="{Binding RouteName}" Width="175"/>
+                                <DataGridTextColumn Header="Khởi hành" Binding="{Binding DepartureTime, StringFormat={}{0:dd/MM/yyyy HH:mm}}" Width="150"/>
+                                <DataGridTextColumn Header="Biển số" Binding="{Binding PlateNumber}" Width="115"/>
+                                <DataGridTextColumn Header="Sức chứa" Binding="{Binding Capacity}" Width="85"/>
+                                <DataGridTextColumn Header="Vé hiệu lực" Binding="{Binding ActiveTickets}" Width="100"/>
+                                <DataGridTextColumn Header="Đã soát" Binding="{Binding CheckedInTickets}" Width="85"/>
+                                <DataGridTextColumn Header="Đã hủy" Binding="{Binding CancelledTickets}" Width="85"/>
+                                <DataGridTextColumn Header="Doanh thu (₫)" Binding="{Binding Revenue, StringFormat={}{0:N0}}" Width="130"/>
+                                <DataGridTextColumn Header="Chờ đánh dấu hoàn (₫)" Binding="{Binding PendingRefundValue, StringFormat={}{0:N0}}" Width="185"/>
+                            </DataGrid.Columns>
+                        </DataGrid>
+                        <TextBlock Text="Danh sách vé trong kỳ" Style="{StaticResource SectionTitle}"/>
+                        <TextBlock Text="Bao gồm cả vé đã hủy để đối chiếu trạng thái; ngày hoàn tiền là thời điểm được đánh dấu thủ công."
+                                   Style="{StaticResource SectionHint}" Margin="0,0,0,9"/>
+                        <DataGrid x:Name="ReportTicketsGrid" Height="320" Margin="0,0,0,10"
+                                  HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="Mã vé" Binding="{Binding TicketCode}" Width="135"/>
+                                <DataGridTextColumn Header="Ngày bán" Binding="{Binding BookedAt, StringFormat={}{0:dd/MM/yyyy HH:mm}}" Width="150"/>
+                                <DataGridTextColumn Header="Mã chuyến" Binding="{Binding TripCode}" Width="130"/>
+                                <DataGridTextColumn Header="Tuyến" Binding="{Binding RouteName}" Width="170"/>
+                                <DataGridTextColumn Header="Khách hàng" Binding="{Binding CustomerName}" Width="170"/>
+                                <DataGridTextColumn Header="Số điện thoại" Binding="{Binding CustomerPhone}" Width="125"/>
+                                <DataGridTextColumn Header="Thanh toán" Binding="{Binding PaymentMethod}" Width="185"/>
+                                <DataGridTextColumn Header="Trạng thái / hoàn tiền" Binding="{Binding StatusText}" Width="220"/>
+                                <DataGridTextColumn Header="Giá vé (₫)" Binding="{Binding Price, StringFormat={}{0:N0}}" Width="115"/>
+                                <DataGridTextColumn Header="Ngày đánh dấu hoàn" Binding="{Binding RefundedAt, StringFormat={}{0:dd/MM/yyyy HH:mm}}" Width="180"/>
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </StackPanel>
+                </ScrollViewer>
+            </TabItem>
+        </TabControl>
+        <Border Grid.Row="1" Background="White" BorderBrush="#E4EAF0" BorderThickness="0,1,0,0" Padding="24,7">
+            <TextBlock x:Name="StatusMessage" TextWrapping="Wrap" Foreground="#245A5B" FontSize="12"
+                       AutomationProperties.LiveSetting="Assertive" MinHeight="23"/>
+        </Border>
+    </Grid>
+</Window>
